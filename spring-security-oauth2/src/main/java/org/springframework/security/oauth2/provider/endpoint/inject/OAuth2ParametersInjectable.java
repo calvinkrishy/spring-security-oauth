@@ -4,7 +4,6 @@ import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.server.impl.model.method.dispatch.FormDispatchProvider;
 import org.springframework.security.oauth2.provider.endpoint.params.OAuth2Parameters;
-import org.springframework.util.StringUtils;
 
 import javax.ws.rs.ext.Provider;
 
@@ -19,6 +18,10 @@ public class OAuth2ParametersInjectable extends AbstractInjectableProvider<OAuth
 	public OAuth2Parameters getValue(HttpContext context) {
 
 		Form form = (Form) context.getProperties().get(FormDispatchProvider.FORM_PROPERTY);
+
+        if(form == null) {
+            form = context.getRequest().getFormParameters();
+        }
 
 		OAuth2Parameters oAuth2Parameters = new OAuth2Parameters();
 
